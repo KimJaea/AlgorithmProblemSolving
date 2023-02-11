@@ -18,32 +18,18 @@ int main() {
 	bomb.push_back(0);
 
 	bool inc = true;
-	int pre_i = 0;
 	for (int i = 1; i <= n + 1; i++) {
 		if (inc) {
-			if (bomb[i] > bomb[pre_i]) {
-				pre_i = i;
+			if (bomb[i] == bomb[i - 1]) {
+				cout << i - 1 << "\n";
 			}
-			else if (bomb[i] == bomb[pre_i]) {
-				cout << pre_i << "\n";
-				pre_i = i;
-			}
-			else {
-				cout << pre_i << "\n";
-				pre_i = i;
+			else if(bomb[i] < bomb[i-1]){
+				cout << i - 1 << "\n";
 				inc = false;
 			}
 		}
 		else {
-			if (bomb[i] < bomb[pre_i]) {
-				pre_i = i;
-			}
-			else if (bomb[i] == bomb[pre_i]) {
-				pre_i = i;
-				inc = true;
-			}
-			else {
-				pre_i = i;
+			if (bomb[i] >= bomb[i - 1]) {
 				inc = true;
 			}
 		}
