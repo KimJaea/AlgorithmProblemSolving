@@ -1,0 +1,81 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.StringTokenizer;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+public class Solution {
+	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st = null;
+
+	static int N, K, A;
+	static int[][] grid;
+	static boolean[][] visited;
+
+	// 상 우 하 좌
+	static int[] dx = { -1, 0, 1, 0 };
+	static int[] dy = { 0, 1, 0, -1 };
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+
+		int T = Integer.parseInt(br.readLine());
+
+		for (int t = 0; t < T; t++) {
+			st = new StringTokenizer(br.readLine());
+			N = Integer.parseInt(st.nextToken());
+			K = Integer.parseInt(st.nextToken());
+
+			grid = new int[N][N];
+			visited = new boolean[N][N];
+
+			int top = 0;
+			for (int i = 0; i < N; i++) {
+				st = new StringTokenizer(br.readLine());
+				for (int j = 0; j < N; j++) {
+					grid[i][j] = Integer.parseInt(st.nextToken());
+					if (grid[i][j] > top) {
+						top = grid[i][j];
+					}
+				}
+			}
+
+			A = 0;
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					if (grid[i][j] == top) {
+						mountain(K, i, j, top, 1);
+					}
+				}
+			}
+
+			System.out.printf("#%d %d\n", t + 1, A);
+		}
+	}
+
+	public static void mountain(int dig, int x, int y, int cur, int c) {
+		visited[x][y] = true;
+		if (c > A)
+			A = c;
+		for (int d = 0; d < 4; d++) {
+			int nx = x + dx[d];
+			int ny = y + dy[d];
+			if (nx < 0 || nx >= N || ny < 0 || ny >= N)
+				continue;
+			if (visited[nx][ny])
+				continue;
+
+			if (grid[nx][ny] < cur) {
+				mountain(dig, nx, ny, grid[nx][ny], c + 1);
+			} else {
+				int tmp = (grid[nx][ny] - cur) + 1;
+				if (dig >= tmp) {
+					mountain(0, nx, ny, cur - 1, c + 1);
+				}
+			}
+		}
+		visited[x][y] = false;
+	}
+
+}
