@@ -59,6 +59,8 @@ public class Main {
 
 		PriorityQueue<Edge> pq = new PriorityQueue<>();
 		pq.add(new Edge(S, 0));
+		isVisited[S] = true;
+		answer[S] = 0;
 
 		while (!pq.isEmpty()) {
 			Edge cur = pq.poll();
@@ -66,17 +68,18 @@ public class Main {
 			int n = cur.node;
 			int w = cur.weight;
 
-			if (answer[n] < w) {
-				continue;
-			}
-
-			isVisited[n] = true;
-			answer[n] = w;
-
 			for (int i = 0; i < connection[n].size(); i++) {
-				Edge nxt = connection[n].get(i);
-				if (answer[n] + nxt.weight < answer[nxt.node]) {
-					pq.add(new Edge(nxt.node, answer[n] + nxt.weight));
+				int nn = connection[n].get(i).node;
+				int nw = connection[n].get(i).weight;
+				if (isVisited[nn]) {
+					if (w + nw < answer[nn]) {
+						answer[nn] = w + nw;
+						pq.add(new Edge(nn, answer[nn]));
+					}
+				} else {
+					isVisited[nn] = true;
+					answer[nn] = w + nw;
+					pq.add(new Edge(nn, answer[nn]));
 				}
 			}
 		}
