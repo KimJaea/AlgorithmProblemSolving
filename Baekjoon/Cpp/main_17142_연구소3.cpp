@@ -18,7 +18,24 @@ vector<bool> virus_select;
 int dx[4] = { 0, 1, 0, -1 };
 int dy[4] = { 1, 0, -1, 0 };
 
+bool checkFilled(int grid[50][50]) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (grid[i][j] == 0) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 void calculateSpread() {
+	if (checkFilled(space)) {
+		spreadable = true;
+		answer = 0;
+		return;
+	}
+
 	bool check[50][50] = { false, }; // 방문 확인
 	int tmp[50][50]; // 바이러스가 확산되는 연구소의 상태
 	for (int i = 0; i < n; i++) {
@@ -43,16 +60,13 @@ void calculateSpread() {
 
 	int time = 1;
 	while (!spread.empty()) {
-		int size = spread.size();
 
-		bool flag = false; // 빈공간으로의 확산이 있었는지 확인
+		int size = spread.size();
 
 		while (size-- > 0) {
 			int x = spread.front().first;
 			int y = spread.front().second;
 			spread.pop();
-            
-			if (tmp[x][y] > 0) flag = true;
 
 			for (int d = 0; d < 4; d++) {
 				int nx = x + dx[d];
@@ -67,28 +81,19 @@ void calculateSpread() {
 				if (tmp[nx][ny] == 0) { // 빈 공간으로 퍼짐
 					tmp[nx][ny] = time;
 				}
-				/*
-				else {
-					tmp[nx][ny] = 1;
-				}
-				*/
 
 				spread.push({ nx, ny }); // 빈 공간과 비활성화 바이러스
 			}
 		}
-		if (flag)
+
+		if (!checkFilled(tmp)) {
 			time++;
-	}
-
-	time -= 2;
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			if (tmp[i][j] == 0) {
-				return;
-			}
 		}
+
+		if (time > answer) return;
 	}
+
+	if (!checkFilled(tmp)) return;
 
 	spreadable = true;
 	if (time < answer) answer = time;
