@@ -14,18 +14,25 @@ public class Main {
 		int T = Integer.parseInt(br.readLine());
 		while (T-- > 0) {
 			st = new StringTokenizer(br.readLine());
-
-			int N = Integer.parseInt(st.nextToken());
-			int M = Integer.parseInt(st.nextToken());
-
-			// M개에서 N개 선택
-			int A = 1;
-			for (int i = M; i > M - N; i--) {
-				A *= i;
-				A /= (M - i + 1);
-			}
-			System.out.println(A);
+			System.out.println(setBridge(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
 		}
+	}
+
+	public static int setBridge(int n, int m) {
+		if (n == m)
+			return 1;
+
+		int[][] bridge = new int[m + 1][m + 1];
+		for (int i = 0; i <= m; i++) {
+			bridge[i][0] = 1;
+			bridge[i][i] = 1;
+		}
+		for (int i = 2; i <= m; i++) {
+			for (int j = 1; j < i; j++) {
+				bridge[i][j] = bridge[i - 1][j - 1] + bridge[i - 1][j];
+			}
+		}
+		return bridge[m][n];
 	}
 
 }
