@@ -1,4 +1,4 @@
-// 4485 ³ì»ö ¿Ê ÀÔÀº ¾Ö°¡ Á©´ÙÁö?
+// 4485 ë…¹ìƒ‰ ì˜· ì…ì€ ì• ê°€ ì ¤ë‹¤ì§€?
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
