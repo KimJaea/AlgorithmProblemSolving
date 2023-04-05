@@ -120,6 +120,7 @@ public class Main {
 		}
 	}
 
+	// 시간 초과 발생
 	public static boolean movable() {
 		for (int i = 0; i < R; i++) {
 			for (int j = 0; j < C; j++) {
